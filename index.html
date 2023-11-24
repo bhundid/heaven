@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <title> </title>
+    <meta charset="UTF8" />
+    <meta name="viewport" content="width=device,initial-scale-1.0" />
+     <!--<meta charset="UTF8" />
+    <meta name="viewport" content="width=device,initial-scale-1.0" />
+    icon-->
+    <link rel="icon" href="./icon.png" type="image/png" />
+    <link rel="shortcut icon" href="./icon.png" type="image/png" />
+    <!--css-->
+    <link rel="stylesheet" href="./css/jquery.mobile-1.4.5.min.css" />
+    <!--js-->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.mobile-1.4.5.min.js"></script>
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="header" id="header" data-position="fixed" data-theme="b ">
+            <h1> Pokedex</h1>
+            <a href="#" class="ui-btn ui-btn-right ui-shadow ui-corner-all ui-icon-refresh ui-btn-icon-notext"onclick="goHome();"></a>
+        </div>
+        <div data-role="main" class="ui-content">
+            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true"></ul>
+            <div data-role="popup" id="popupDialog" data-overlay-theme="b" style="width: 640px; max-width: 100%;">
+                <div data-role="header" data-theme="b">
+                    <h1 id="pokename"></h1>
+                    <a href="#" class="ui-btn ui-btn-right ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext"
+                        data-rel="back"></a>
+                </div>
+                <div data-role="main" class="ui-content">
+                    <img id="pokeimg" src="#" width="100%" /><br />
+                    <h3>Status</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td align="right"><b>Type</b></td>
+                                <td id="poketype"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>HP</b></td>
+                                <td id="pokehp"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>Attack</b></td>
+                                <td id="pokeattack"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>Defense</b></td>
+                                <td id="pokedefense"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>SP Atk</b></td>
+                                <td id="pokespatk"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>SP Def</b></td>
+                                <td id="pokespdef"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>Speed</b></td>
+                                <td id="pokespeed"></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><b>Total</b></td>
+                                <td id="poketotal"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+            <h4>The Knowledge Lantern</h4>
+        </div>
+    </div>
+    <script >
+        var pokemons = [];
+        function goHome(){
+            window.location.reload();
+        }
+        function showDetail(i) {
+            console.log(pokemons[i]);
+            $('#pokeimg').attr('src',pokemons[i].img)
+            $('#pokename').html(pokemons[i].name)
+            $('#poketype').html(pokemons[i].type1 +''+ pokemons[i].type2)
+            $('#pokehp').html(pokemons[i].hp)
+            $('#pokeattack').html(pokemons[i].attack)
+            $('#pokedefense').html(pokemons[i].defensc)
+            $('#pokespatk').html(pokemons[i].spatk)
+            $('#pokespdef').html(pokemons[i].spdef)
+            $('#pokespeed').html(pokemons[i].speed)
+            $('#poketotal').html(pokemons[i].total)
+        }
+        $(document).ready(function () {
+            $.getJSON("https://script.google.com/macros/s/AKfycbziToYvlH8leNM1OupzrTOxd2ZbsG8TyY4SkmSkHQ7Z_6bET34T0XbogOiJiNWF75BB/exec", function (result) {
+                //console.log(result);
+                 pokemons = result.pokemons;
+                 //console.log(pokemons);
+                for (var i = 0; i < pokemons.length; i++) {
+                    var li = '<li>';
+                    li += '<a href="#popupDialog" data-rel="popup" data-position-to="#header" data-transition="pop" onclick="showDetail(' + i + ')">';
+                    li += '<img  src="' + pokemons[i].img + '">';
+                    li += '<h2>' + pokemons[i].name + '<h2>';
+                    li += '<p>' + pokemons[i].type1 +''+ pokemons[i].type2 + '</p>';
+                    li += '</a>';
+                    li += '</li>';
+                    $('ul').append(li);
+                }
+                $('ul').listview('refresh');
+            });
+        });
+    </script>
+</body>
+
+</html>
